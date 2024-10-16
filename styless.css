@@ -66,8 +66,8 @@ header {
 
 /* Estilos para el logo */
 .header img {
-    max-width: 100%; /* Permite que el logo ocupe todo el espacio disponible */
-    width: 100px;
+     /* Permite que el logo ocupe todo el espacio disponible */
+    width: 5px;
     height: auto; /* Mantiene las proporciones correctas */
     max-height: 80px; /* Ajusta la altura máxima del logo */
 }
