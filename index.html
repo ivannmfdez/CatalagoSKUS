@@ -1,0 +1,2330 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Productos</title>
+    <!-- Fuente de Google -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap">
+    <!-- Archivo CSS principal -->
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Bebas Neue', sans-serif;
+            background-color: #f4f4f4;
+            color: #333333;
+        }
+
+        .header {
+            width: 100%;
+            background-color: #201c1d;
+            padding: 30px 0;  /* Aumentado para ajustar el tamaño del logotipo */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;  /* Aumentado para ajustar el tamaño del logotipo */
+            box-sizing: border-box;
+        }
+
+        .header img {
+            height: 58px; /* Aumentado tamaño del logotipo */
+            
+        }
+
+        .header h1 {
+            color: #fdb913;
+            font-size: 48px;
+            margin: 0;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            background-color: #fdb913;
+            padding: 10px 0;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .categories a {
+            color: #003b71;
+            margin: 0 15px;
+            font-size: 24px;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .categories a:hover {
+            color: #ffffff;
+        }
+
+        .container {
+            width: 100%;
+
+            margin: 30px auto;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 59, 113, 0.2);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            box-sizing: border-box;
+            margin-bottom: 40px;
+            border: 1px solid #003b71;
+            border-radius: 25px;
+            text-align: center;
+            color: #333333;
+            background-color: #f4f4f4;
+            transition: all 0.3s ease-in-out;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #fdb913;
+            box-shadow: 0 0 10px rgba(253, 185, 19, 0.5);
+            background-color: #ffffff;
+        }
+
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .product-item {
+            background: linear-gradient(45deg, #ffffff00, #ffffff56);
+            padding: 20px;
+            border: 1px solid #dddddd00;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 59, 113, 0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .product-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(0, 59, 113, 0.3);
+        }
+
+        .product-item img {
+            width: 100%;
+            height: auto;
+            border-bottom: 2px solid #fdb913;
+            margin-bottom: 10px;
+        }
+
+        .product-item h2 {
+            font-size: 24px;
+            margin: 0;
+            color: #003b71;
+        }
+
+        .product-item p {
+            margin: 5px 0 0;
+            color: #666666;
+        }
+
+        @media (max-width: 900px) {
+            .product-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 600px) {
+            .product-list {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .header h1 {
+                font-size: 36px;
+            }
+
+            .header img {
+                height: 80px;
+            }
+
+            .categories a {
+                font-size: 18px;
+            }
+        }
+
+/* Estilos para el modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 59, 113, 0.8);
+    padding-top: 60px;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 0 15px rgba(0, 59, 113, 0.5);
+    border-radius: 8px;
+}
+
+/* Estilos para la imagen principal del modal */
+.modal-img-main {
+    width: 100%; /* Ajusta al ancho del contenedor */
+    height: auto; /* Mantiene la proporción de la imagen */
+    display: block;
+    margin-bottom: 20px; /* Espacio debajo de la imagen */
+}
+
+/* Estilos para la imagen secundaria del modal */
+.imagen-debajo {
+    width: 100%; /* Ajusta al ancho del contenedor */
+    height: auto; /* Mantiene la proporción de la imagen */
+    display: block;
+    margin-bottom: 20px; /* Espacio debajo de la imagen */
+}
+
+
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <img src="logos encabezado/LOGO CATALOGOp.png" alt="Logo center">
+    </div>
+    <div class="categories">
+        <a href="#" onclick="filterProducts('all'); return false;">Inicio</a>
+        <a href="#" onclick="filterProducts('bote'); return false;">Bote</a>
+        <a href="#" onclick="filterProducts('botella'); return false;">Botella</a>
+        <a href="#" onclick="filterProducts('Cadena-Comercial'); return false;">Cadena Comercial</a>
+
+    </div>        
+    <div class="container">
+        <input type="text" id="search" placeholder="Buscar..." onkeyup="searchProducts()">
+        <div class="product-list" id="product-list">
+            <!-- Ejemplo de productos -->
+            <div class="product-item" data-category="botella" data-name="BARRILITO 6 PK 24/325 ML CT NCA" data-code="3006069" onclick="openModal('3006069')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3006069</h2>
+                    <p style="text-decoration: none;">BARRILITO BOTE<br>6 PK 24/325 ML CT NCA</p>
+                </a>
+                <br>
+                <div class="link-container">
+                    <div class="pdf">
+                        <a href="./FT/BARRILITO/TRADICIONAL/BOTE/355 ML/0405_0246 B 355 ML BT 6 H-C PK TD REV 07.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+                    </div>
+                </div>
+            </div>
+            <div class="product-item" data-category="botella" data-name="BARRILITO FAJILLA 24/325 ML NR PL" data-code="3010443" onclick="openModal('3010443')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3010443</h2>
+                <p style="text-decoration: none;">BARRILITO FAJILLA<br> 24/325 ML NR PL</p>
+            </a>
+            <br>
+            <div class="link-container">
+                <div class="pdf">
+                    <a href="./FT/BARRILITO/MODERNO/325 ML/1067_1434 B 325 ML 24 PK NR REV 01.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+                </div>
+            </div>
+            </div>
+            <div class="product-item" data-name="BDUNKELWEIZEN" data-code="3005860" onclick="openModal('3005860')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto1.jpg" alt="Producto 1">
+                <h2 style="text-decoration: none;">3005860</h2>
+                <p style="text-decoration: none;">BDUNKELWEIZEN<br>6 PK 24/355 ML CT</p>
+            </a>
+               <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-category="bote" data-name="BL BOTE" data-code="3008167" onclick="openModal('3008167')">
+                <a href="./DetallesHTML/3008167.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3008167</h2>
+                <p style="text-decoration: none;">BUD LIGHT BOTE<br>12 PK 12/710 ML CT</p>
+            </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUD LIGHT/MODERNO/BOTE/710 ml/0566_0843 BL 710 ML 12 PK BT REV 05.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-category="bote" data-name="BUD LG LOOSE P 24/355 ML R" data-code="3010468" onclick="openModal('3010468')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3010468</h2>
+                <p style="text-decoration: none;">BUD LG LOOSE P<br>24/355 ML R</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUD LIGHT/TRADICIONAL/355 ML/1069_0875 BL 355 ML LOOSE PK REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+        <div class="product-item" data-name="BOCA PILS" data-code="3005855" onclick="openModal('3005855')">
+            <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3005855</h2>
+                <p style="text-decoration: none;">BOCA PILS<br>6 PK 24/355 ML CT.</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="BOCANEGRA DUNKEL" data-code="3007990" onclick="openModal('3007990')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3007990</h2>
+                <p style="text-decoration: none;">BOCANEGRA DUNKEL<br>6(4PK)/24 355 ML</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="BOCANEGRA PILSNER" data-code="3007989" onclick="openModal('3007989')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3007989</h2>
+                <p style="text-decoration: none;">BOCANEGRA PILSNER<br>6(4PK)/24 355 ML</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="BUD LIGHT" data-code="3006598" onclick="openModal('3006598')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3006598</h2>
+                <p style="text-decoration: none;">BUD LIGHT<br>6PK 24/355 ML CT NR CI.</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="BUD LIGHT BOTE" data-code="3006699" onclick="openModal('3006699')">
+                <a href="./DetallesHTML/3006699.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3006699</h2>
+                <p style="text-decoration: none;">BUD LIGHT BOTE<br>12 PK 24/355 ML CT CI</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUD LIGHT/TRADICIONAL/BOTE/355 ml/12 PK/0445_0819 BL 355 ML 12 PK BT TD CI REV 09.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="BUD LIGHT BOTE" data-code="3006518" onclick="openModal('3006518')">
+                <a href="./DetallesHTML/3006518.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3006518</h2>
+                <p style="text-decoration: none;">BUD LIGHT BOTE<br>4PK H-C 24/473 ML CT CI</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUD LIGHT/TRADICIONAL/BOTE/473 ml/0443_0826 BL 473 ML 4 PK HI CONE BT TD REV 13.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="BUD LIGHT BOTE" data-code="3006519" onclick="openModal('3006519')">
+                <a href="./DetallesHTML/3006519.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3006519</h2>
+                <p style="text-decoration: none;">BUD LIGHT BOTE<br>6 PK 24/355 ML CT CI</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUD LIGHT/TRADICIONAL/BOTE/355 ml/6 PK/0442_0814 BL 355 ML 6 PK  BT TD CI REV 12.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="BUD LIGHT BOTE" data-code="3000066" onclick="openModal('3000066')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3000066</h2>
+                <p style="text-decoration: none;">BUD LIGHT BOTE<br>6 PACK 24/12 OZ CM</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="BUD LIGHT BOTE<br>12 PACK H-C 24/355 ML PCR" data-code="3010757" onclick="openModal('3010757')">
+                <a href="./DetallesHTML/3010757.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3010757</h2>
+                <p style="text-decoration: none;">BUD LIGHT BOTE<br>12 PACK H-C 24/355 ML PCR</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUD LIGHT/MODERNO/BOTE/355 ml/12 PK/1078_0836 BL 355 ML H-C 12 PK BT REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="BUDWEISER LITRO" data-code="3000062" onclick="openModal('3000062')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3000062</h2>
+                <p style="text-decoration: none;">BUDWEISER LITRO<br> 12/32 OZ</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="BUDWEISER TALL CAN" data-code="3010337" onclick="openModal('3010337')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3010337</h2>
+                <p style="text-decoration: none;">BUDWEISER TALL CAN<br>6 PK H-C 24/355 ML</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/MODERNO/BOTE/355 ML/1056_0711 BW 355 ML 6 PK TALL CAN H-C CT CA REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="C AGUA RIFADA TC 6P H-C 24/355 ML LMO-TOR" data-code="3009618" onclick="openModal('3009618')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3009618</h2>
+                <p style="text-decoration: none;">CORONA AGUA RIFADA TC<br>6P H-C 24/355 ML LMO-TOR</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA AGUA RIFADA/BOTE/1004_0381 C AGUA RIFADA TALL CAN 355 ML 6P H-C LIMON TORONJA REV 04.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="C AGUA RIFADA TC 6P H-C 24/355 ML LIM-FRRO" data-code="3009619" onclick="openModal('3009619')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3009619</h2>
+                <p style="text-decoration: none;">C AGUA RIFADA TC<br>6P H-C 24/355 ML LIM-FRRO</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA AGUA RIFADA/BOTE/1005_0382 C AGUA RIFADA TALL CAN 355 ML 6 PK H-C LIMON FRUTOS ROJOS REV 04.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="C AGUA RIFADA TC 6P H-C 24/355 ML LIM-MA-PI" data-code="3009620" onclick="openModal('3009620')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3009620</h2>
+                <p style="text-decoration: none;">C AGUA RIFADA TC<br>6P H-C 24/355 ML LIM-MA-PI</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA AGUA RIFADA/BOTE/1006_0383 C AGUA RIFADA TALL CAN 355 ML 6 PK H-C LIMON MANGO PIÑA REV 05.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="C AGUA RIFADA TC 6P H-C 24/355 ML JAMFRAM" data-code="30010227" onclick="openModal('30010227')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3010227</h2>
+                <p style="text-decoration: none;">C AGUA RIFADA TC<br>6P H-C 24/355 ML JAMFRAM</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA AGUA RIFADA/BOTE/1046_0389 C AGUA RIFADA TALL CAN 355 ML 6 PK JAMAICA FRAMBUESA REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="C AGUA RIFADA 24 PK 210 ML NR LIMA LIMON" data-code="3010404" onclick="openModal('3010404')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3010404</h2>
+                <p style="text-decoration: none;">C AGUA RIFADA<br>24 PK 210 ML NR LIMA LIMON</p>
+                </a>
+            <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA AGUA RIFADA/210 ML/1059_0396 C AGUA RIFADA 210ML 24 PK LIMA LIMÓN RV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="C AGUA RIFADA 24 PK 210 ML NR LIM-MA-PI" data-code="3010405" onclick="openModal('3010405')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3010405</h2>
+                <p style="text-decoration: none;">C AGUA RIFADA<br>24 PK 210 ML NR LIM-MA-PI</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA AGUA RIFADA/210 ML/1062_0399 C AGUA RIFADA 210ML 24PK LIMON MANGO PIÑA RV 03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="C AGUA RIFADA 24 PK 210 ML NR LIM TOR" data-code="3010407" onclick="openModal('3010407')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3010407</h2>
+                <p style="text-decoration: none;">C AGUA RIFADA<br>24 PK 210 ML NR LIM TOR</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA AGUA RIFADA/210 ML/1060_0397 C AGUA RIFADA 210ML 24 PK LIMON TORONJA RV02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="C AGUA RIFADA 24 PK 210 ML NR LIM FRRO" data-code="3010408" onclick="openModal('3010408')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3010408</h2>
+                <p style="text-decoration: none;">C AGUA RIFADA<br>24 PK 210 ML NR LIM FRRO</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA AGUA RIFADA/210 ML/1061_0398 C AGUA RIFADA 210 ML 24 PK FRUTOS ROJOS RV 03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="C BOTE" data-code="3005293" onclick="openModal('3005293')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3005293</h2>
+                <p style="text-decoration: none;">C BOTE<br>12 PK 24/355 ML CT REFRICHELADOR</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA/TRADICIONAL/BOTE/355 ML/0873_0345 C 355 ML 12 PK BT REFRICHELADOR TD MAQ REV 21.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+                <div class="product-item" data-name="C LIGERA 1.8 TALL" data-code="3008647" onclick="openModal('3008647')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008647</h2>
+                    <p style="text-decoration: none;">C LIGERA 1.8 TALL<br></p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CE BT 12 PK DIV 12/710 ML." data-code="3008239" onclick="openModal('3008239')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008239</h2>
+                    <p style="text-decoration: none;">CE BT<br>12 PK DIV 12/710 ML.</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA/MODERNO/BOTE/710 ML/0921_0691 CE  710 ML 12 PK BT DIV REV 06.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CE MEGA PAPEL<br>12 PK DIV 12/1.2 L NR" data-code="3008337" onclick="openModal('3008337')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008337</h2>
+                    <p style="text-decoration: none;">CE MEGA PAPEL<br>12 PK DIV 12/1.2 L NR</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CL BT<br>12 PK DIV 12/710 ML" data-code="3008728" onclick="openModal('3008728')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="ImPo/3008728p.png" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008728</h2>
+                    <p style="text-decoration: none;">CL BT<br>12 PK DIV 12/710 ML</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA LIGHT/MODERNO/BOTE/710 ML/0968_0783 CL 710 ML 12 PK BT DIV REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA GOLDEN BOTE 6 PK H-C 24/330 ML" data-code="3017987" onclick="openModal('3017987')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3017987</h2>
+                    <p style="text-decoration: none;">CORONA GOLDEN BOTE<br>6 PK H-C 24/330 ML</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA GOLDEN LIGHT/BOTE/330 ml/6 Pack/1126_0850 CORONA GOLDEN L 330 ML H-C  6 PK BT TD  REV 01.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA GOLDEN LG BOTE 12 PK H-C 24/330 ML" data-code="3017988" onclick="openModal('3017988')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3017988</h2>
+                    <p style="text-decoration: none;">CORONA GOLDEN LG BOTE<br>12 PK H-C 24/330 ML</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA GOLDEN LIGHT/BOTE/330 ml/12 Pack/244_1706 CORONA GOLDEN LG 330 ML H-C  12PK BT REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA GOLDEN LIGHT MEGA 12 PK 12/12.L" data-code="3017992" onclick="openModal('3017992')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3017992</h2>
+                    <p style="text-decoration: none;">CORONA GOLDEN LIGHT MEGA<br>12 PK 12/12.L</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA GOLDEN LIGHT/1.2 L/245_0177 CORONA GOLDEN L MEGA 1.2 ML 12 PK RET REV 03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CGL BT 12 PK DIV 12/710 ML" data-code="3018007" onclick="openModal('3018007')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3018007</h2>
+                    <p style="text-decoration: none;">CGL BT<br>12 PK DIV 12/710 ML</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA GOLDEN LIGHT/BOTE/710 ml/247_5001 C GOLDEN LG 710 ML BT 12 PK REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA BOTE<br>4PKH-C 24/473 ML CT" data-code="3003911" onclick="openModal('3003911')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3003911</h2>
+                    <p style="text-decoration: none;">CORONA BOTE<br>4PKH-C 24/473 ML CT</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA/MODERNO/BOTE/473 ML/0795_0601 C 473 ML 4 PK HI CONE 24 BT TD REV 19.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA<br>12 PK 24/355 ML CM" data-code="3006780" onclick="openModal('3003911')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3006780</h2>
+                    <p style="text-decoration: none;">CORONA<br>12 PK 24/355 ML CM</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA/MODERNO/355 ML/0463_0407 C 355 ML 12 PK MD REV 12.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA BT<br>12PK 24/355 ML CT NE" data-code="3007517" onclick="openModal('3007517')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3007517</h2>
+                    <p style="text-decoration: none;">CORONA BT<br>12PK 24/355 ML CT NE</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA BT<br>6PK H-C 24/330 ML" data-code="3009013" onclick="openModal('3009013')">
+                    <a href="./DetallesHTML/3009013.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3009013</h2>
+                    <p style="text-decoration: none;">CORONA BT<br>6PK H-C 24/330 ML</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA/MODERNO/BOTE/330 ML/0990_2360 C 330 ML 6PK H-C BT REV 08.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA CERO BOTE<br>6 PK H-C 24/355 ML CT CI" data-code="3007637" onclick="openModal('3007637')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3007637</h2>
+                    <p style="text-decoration: none;">CORONA CERO BOTE<br>6 PK H-C 24/355 ML CT CI</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA CERO TALL C<br>6P H-C 24/355 ML NL" data-code="3009179" onclick="openModal('3009179')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3009179</h2>
+                    <p style="text-decoration: none;">CORONA CERO TALL C<br>6P H-C 24/355 ML NL</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA CERO/MODERNO/BOTE/355 ML/0997_1005 CC 355 ML 6PK TALL CAN H-C NL REV 07.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA CLARA CANASTILLA 6 PACK 24/355 ML CM" data-code="3000460" onclick="openModal('3000460')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3000460</h2>
+                    <p style="text-decoration: none;">CORONA CLARA CANASTILLA<br>6 PACK 24/355 ML CM</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #fbff00; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA CLARA<br>12 PK 24/355 ML CM" data-code="3000461" onclick="openModal('3000461')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3000461</h2>
+                    <p style="text-decoration: none;">CORONA CLARA<br>12 PK 24/355 ML CM</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA/MODERNO/355 ML/0064_0149 C 355 ML 12 PK MD REV 30.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA CLARA LOOSE<br>PK 24/355 ML CM" data-code="3000462" onclick="openModal('3000462')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3000462</h2>
+                    <p style="text-decoration: none;">CORONA CLARA LOOSE<br>PK 24/355 ML CM</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA LOOSE<br>PK 24/355ML CJ CRAFT AF" data-code="3009980" onclick="openModal('3009980')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3009980</h2>
+                    <p style="text-decoration: none;">CORONA LOOSE<br>PK 24/355ML CJ CRAFT AF</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA/MODERNO/355 ML/1037_169 C  355 ML 24 PK LOOSE  REV 03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA DIV<br>12/940 ML CM GRABADA" data-code="3001269" onclick="openModal('3001269')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3001269</h2>
+                    <p style="text-decoration: none;">CORONA DIV<br>12/940 ML CM GRABADA</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA EXTRA AMBAR<br>24/355 ML CT R" data-code="3000009" onclick="openModal('3000009')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3000009</h2>
+                    <p style="text-decoration: none;">CORONA EXTRA AMBAR<br>24/355 ML CT R</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/C AMBAR/TRADICIONAL/355 ML/0038_0146 CA 355 ML 24 PK DIV TD REV 20.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA EXTRA BOTE<br>H-C 24/355 ML CT" data-code="3000003" onclick="openModal('3000003')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3000003</h2>
+                    <p style="text-decoration: none;">CORONA EXTRA BOTE<br>H-C 24/355 ML CT</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA/TRADICIONAL/BOTE/355 ML/0020_114 C 355 ML 6 PK BT TD REV 30.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA EXTRA BOTE<br>12 PK 24/330 ML" data-code="3009849" onclick="openModal('3009849')">
+                    <a href="./DetallesHTML/3009849.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3009849</h2>
+                    <p style="text-decoration: none;">CORONA EXTRA BOTE<br>12 PK 24/330 ML</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA/TRADICIONAL/BOTE/330 ML/1030_0355 C 330 ML 12 PK BT NORTEÑAS REV 06.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA EXTRA BOTE<br>6 PK H-C 24/410 ML" data-code="3010296" onclick="openModal('3010296')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3010296</h2>
+                    <p style="text-decoration: none;">CORONA EXTRA BOTE<br>6 PK H-C 24/410 ML</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA/MODERNO/BOTE/410 ML/1052_0356 C  410 ML 6 PK H-C BT  REV 04.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA EXTRA CLARA CANASTILLA<br> 24/330 ML NR" data-code="3008238" onclick="openModal('3008238')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008238</h2>
+                    <p style="text-decoration: none;">CORONA EXTRA CLARA CANASTILLA<br> 24/330 ML NR</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA/MODERNO/330 ML/0920_1371 C 330 ML 6 PK CAN REV 00.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="CORONA LG 12 PK 12/355 ML CM NCA" data-code="3006919" onclick="openModal('3006919')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3006919</h2>
+                    <p style="text-decoration: none;">CORONA LG<br>12 PK 12/355 ML CM NCA</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA LIGHT/MODERNO/355 ml/0466_0769 CL 355 ML 12 PK MD NCA REV 05.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>   
+            <div class="product-item" data-name="CORONA LG 12 PK 12/1.05 LT CM" data-code="3007397" onclick="openModal('3007397')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3007397</h2>
+                <p style="text-decoration: none;">CORONA LG<br>12 PK 12/1.05 LT CM</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff00ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">SKU MAL?</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="CORONA LG<br>24/355 ML LOOSE PK CM" data-code="3006918" onclick="openModal('3006918')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                <img src="producto2.jpg" alt="Producto 2">
+                <h2 style="text-decoration: none;">3006918</h2>
+                <p style="text-decoration: none;">CORONA LG<br>24/355 ML LOOSE PK CM</p>
+                </a>
+                <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA LIGHT/MODERNO/355 ml/0465_0799 CL LOOSE PACK 355 ML 24 PK MD NCA REV 03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+                <div class="product-item" data-name="CORONA LG BOTE<br>4PK H-C 24/473 CT CI" data-code="3006754" onclick="openModal('3006754')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3006754</h2>
+                    <p style="text-decoration: none;">CORONA LG BOTE<br>4PK H-C 24/473 CT CI</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA LIGHT/TRADICIONAL/BOTE/473 ML/0450_767 CL 473 ML 4 PK BT HI-CONE TD REV 08.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>    
+                <div class="product-item" data-name="CORONA LG BT<br>12 PK 24/330 ML" data-code="3009882" onclick="openModal('3009882')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3009882</h2>
+                    <p style="text-decoration: none;">CORONA LG BT<br>12 PK 24/330 ML</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA LIGHT/TRADICIONAL/BOTE/330 ML/1035_0786 CL 330 ML 12 PK BT REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="CORONA LG T CAN<br> 24/355 ML REF CM CA" data-code="3006799" onclick="openModal('3006799')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3006799</h2>
+                    <p style="text-decoration: none;">CORONA LG T CAN<br> 24/355 ML REF CM CA</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA LIGHT/MODERNO/BOTE/355 ML/0454_0772 CL 355 ML 12 PK TALL CAN REFRICHELADOR MD CA REV 10.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                
+            <div class="product-item" data-name="CORONA LG TALL CAN<br>6P H-C 27/355 ML CT CA" data-code="3006762" onclick="openModal('3006762')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3006762</h2>
+                    <p style="text-decoration: none;">CORONA LG TALL CAN<br>6P H-C 27/355 ML CT CA</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="CORONA LIGHT BOTE<br>6 PK H-C 24/330 ML" data-code="3009867" onclick="openModal('3009867')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3009867</h2>
+                    <p style="text-decoration: none;">CORONA LIGHT BOTE<br>6 PK H-C 24/330 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA LIGHT/MODERNO/BOTE/330 ML/1034_0795 CL  330 ML H-C  6 PK BT REV 03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>  
+             <div class="product-item" data-name="CORONITA EXTRA<br>12 PK 12/210 ML" data-code="3000502" onclick="openModal('3000502')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3000502</h2>
+                    <p style="text-decoration: none;">CORONITA EXTRA<br>12 PK 12/210 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA/MODERNO/210 ML/0009_0333 C 210 ML LOOSE 12  PK MD REV 21.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>   
+            <div class="product-item" data-name="CORONITA EXTRA CLARA<br>24/210 ML MODERNO MAQ" data-code="3005271" onclick="openModal('3005271')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3005271</h2>
+                    <p style="text-decoration: none;">CORONITA EXTRA CLARA<br>24/210 ML MODERNO MAQ</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA/MODERNO/210 ML/0865_0318 C 210 ML 24 PK MD MAQ REV 09.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>    
+            <div class="product-item" data-name="CORONITA LOOSE<br> PK 24/210 ML CJ CRAFT AF" data-code="3009979" onclick="openModal('3009979')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3009979</h2>
+                    <p style="text-decoration: none;">CORONITA LOOSE<br> PK 24/210 ML CJ CRAFT AF</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA/MODERNO/210 ML/1036_357 C 210 ML LOOSE  24 PK REV 03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>   
+                <div class="product-item" data-name="CORONITA DIV 24/210 ML NR" data-code="3017869" onclick="openModal('3017869')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3017869</h2>
+                    <p style="text-decoration: none;">CORONITA DIV<br>24/210 ML NR</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/CORONA/MODERNO/210 ML/1116_371 C 24 210 ML NR REV 00.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>  
+            <div class="product-item" data-name="CUCAPA AMBAR<br>24/355 ML" data-code="3006039" onclick="openModal('3006039')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3006039</h2>
+                    <p style="text-decoration: none;">CUCAPA AMBAR<br>24/355 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="CUCAPA DORADA<br>6 PK 24/355 ML CM" data-code="3007748" onclick="openModal('3007748')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3007748</h2>
+                    <p style="text-decoration: none;">CUCAPA DORADA<br>6 PK 24/355 ML CM</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/REGIONAL/355 ML/0004_9849 CUCAPA DORADA 355 ML 6 PK MD REV 00.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>   
+         <div class="product-item" data-name="ESTRELLA BOTE<br>4 PK H-C 24/473 ML CT CI" data-code="3006134" onclick="openModal('3006134')">
+            <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3006134</h2>
+                    <p style="text-decoration: none;">ESTRELLA BOTE<br>4 PK H-C 24/473 ML CT CI</p>
+            </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/ESTRELLA/TRADICIONAL/BOTE/473 ML/0425_5052 E 473 ML 4 PK BT TD CI REV 14.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                
+            <div class="product-item" data-name="GUINNESS DRAUGHT<br>6 PK 24/440 ML" data-code="3007777" onclick="openModal('3007777')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3007777</h2>
+                    <p style="text-decoration: none;">GUINNESS DRAUGHT<br>6 PK 24/440 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="GUINNESS ORIGINAL SOUT 325ML 6(4PK)" data-code="3008322" onclick="openModal('3008322')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008322</h2>
+                    <p style="text-decoration: none;">GUINNESS ORIGINAL SOUT<br>325ML 6(4PK)</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="HERENCIA CUCAPA BORDER<br> 1(24 PK) 355 ML" data-code="3008568" onclick="openModal('3008568')">
+                <a href="./DetallesHTML/3008577.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008568</h2>
+                    <p style="text-decoration: none;">HERENCIA CUCAPA BORDER<br> 1(24 PK) 355 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>     
+                <div class="product-item" data-name="HERENCIA CUCAPA KOLSCH 1(24 PK) 355 ML" data-code="3008577" onclick="openModal('3008577')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008577</h2>
+                    <p style="text-decoration: none;">HERENCIA CUCAPA KOLSCH<br> 1(24 PK) 355 ML</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+             <div class="product-item" data-name="HERENCIA CUCAPA OBSCURA<br>1(24 PK) 355 ML" data-code="3008567" onclick="openModal('3008567')">
+                <a href="./DetallesHTML/3008567.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008567</h2>
+                    <p style="text-decoration: none;">HERENCIA CUCAPA OBSCURA<br>1(24 PK) 355 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+                <div class="product-item" data-name="HOEG WHIT<br>24 0.330L BOX WRA INT" data-code="3004097" onclick="openModal('3004097')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3004097</h2>
+                    <p style="text-decoration: none;">HOEG WHIT<br>24 0.330L BOX WRA INT</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="MA<br>6 PK 12/355 ML CM CIF" data-code="3007529" onclick="openModal('3007529')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3007529</h2>
+                    <p style="text-decoration: none;">MA<br>6 PK 12/355 ML CM CIF</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MODELO ÁMBAR/MODERNO/0525_2409 MA 355 ML 6 PK MD CIF REV 09.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+            <div class="product-item" data-name="MICHELOB ULTRA TALL CAN<br>12 PK 24/355 ML CI" data-code="3008788" onclick="openModal('3008788')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008788</h2>
+                    <p style="text-decoration: none;">MICHELOB ULTRA TALL CAN<br>12 PK 24/355 ML CI</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+             <div class="product-item" data-name="ME BOTE<br>6 PK H-C 24/355 ML CT CI" data-code="3007289" onclick="openModal('3007289')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="/portada/3008728p.png" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3007289</h2>
+                    <p style="text-decoration: none;">ME BOTE<br>6 PK H-C 24/355 ML CT CI</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MODELO ESPECIAL/TRADICIONAL/BOTE/355 ML/0497_2053 ME 355 ML 6 PK BT TD CI REV 10.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="ME BT<br>4PK H-C 24/473 ML CT CI" data-code="3007678" onclick="openModal('3007678')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3007678</h2>
+                    <p style="text-decoration: none;">ME BT<br>4PK H-C 24/473 ML CT CI</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MODELO ESPECIAL/TRADICIONAL/BOTE/473 ML/0533_2065 ME 473 ML 4 PK HC BTCI TD REV 11.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+            <div class="product-item" data-name="MICHELOB U TALL C<br>6 PK H-C 24/355 ML CI" data-code="3008787" onclick="openModal('3008787')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008787</h2>
+                    <p style="text-decoration: none;">MICHELOB U TALL C<br>6 PK H-C 24/355 ML CI</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MICHELOB ULTRA/MODERNO/BOTE/355 ML/0120_8981 MCH 355 ML 6 PK TALL CAN HI-CONE CI REV 05.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+            <div class="product-item" data-name="MICHELOB ULTRA<br>12 PK/850 ML NR" data-code="3010497" onclick="openModal('3010497')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="p3010497.png" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3010497</h2>
+                    <p style="text-decoration: none;">MICHELOB ULTRA<br>12 PK/850 ML NR</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MICHELOB ULTRA/MODERNO/850 ML/1072_8936 MU 850 ML 12 PK NR REV 00.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="MICHELOB ULTRA<br>12 PK 24/355 ML NR CI" data-code="3003348" onclick="openModal('3003348')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3003348</h2>
+                    <p style="text-decoration: none;">MICHELOB ULTRA<br>12 PK 24/355 ML CT</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+                <div class="product-item" data-name="MICHELOB ULTRA<br>24 PK 24/7 OZ" data-code="3007467" onclick="openModal('3007467')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3007467</h2>
+                    <p style="text-decoration: none;">MICHELOB ULTRA<br>24 PK 24/7 OZ</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff7b00; padding: 10px 20px; border-radius: 100px; text-decoration: none;">SKU MAL?</a>
+
+                        </div>
+                </div>
+                </div>   
+            <div class="product-item" data-name="MICHELOB ULTRA<br>6 PK 24/210 ML" data-code="3010358" onclick="openModal('3010358')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3010358</h2>
+                    <p style="text-decoration: none;">MICHELOB ULTRA<br>6 PK 24/210 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MICHELOB ULTRA/MODERNO/210 ML/1054_8946 MICHELOB ULTRA  210 ML  6 PK  REV 04.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="MICHELOB ULTRA<br>6 PK 24/355 ML NR CI" data-code="3008778" onclick="openModal('3008778')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008778</h2>
+                    <p style="text-decoration: none;">MICHELOB ULTRA<br>6 PK 24/355 ML NR CI</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MICHELOB ULTRA/MODERNO/355 ML/0979_8973 MCH 355 ML 6 PK  NR CI REV 07.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="MICHELOB ULTRA 12 PK 24/355 ML NR CI" data-code="3008807" onclick="openModal('3008807')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008807</h2>
+                    <p style="text-decoration: none;">MICHELOB ULTRA<br>12 PK 24/355 ML NR CI</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MICHELOB ULTRA/MODERNO/355 ML/0980_8954 MCH 355 ML 12 PK NR CI REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="MICHELOB ULTRA BT<br>12P 12/710 ML" data-code="3009695" onclick="openModal('3009695')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="p3009695.png" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3009695</h2>
+                    <p style="text-decoration: none;">MICHELOB ULTRA BT<br>12P 12/710 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MICHELOB ULTRA/MODERNO/BOTE/710 ML/1013_8999 MCH 710 ML 12 PK BT DIV REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>  
+            <div class="product-item" data-name="MICHELOB ULTRA BT<br>4P H-C 24/473 ML CI" data-code="3008827" onclick="openModal('3008827')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008827</h2>
+                    <p style="text-decoration: none;">MICHELOB ULTRA BT<br>4P H-C 24/473 ML CI</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MICHELOB ULTRA/MODERNO/BOTE/473 ML/0972_8995 MCH 473 ML 4 PK HI CONE 24 BT REV 05.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+                <div class="product-item" data-name="MICHELOB ULTRA 12 PK 24/355 ML NR" data-code="3010499" onclick="openModal('3010499')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3010499</h2>
+                    <p style="text-decoration: none;">MICHELOB ULTRA<br>12 PK 24/355 ML NR</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MICHELOB ULTRA/MODERNO/355 ML/1073_8939 MCH 355 ML12 PK NR  REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+                <div class="product-item" data-name="MICHELOB ULTRA<br>T-C 12 PACK 24/355 ML" data-code="3010758" onclick="openModal('3010758')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3010758</h2>
+                    <p style="text-decoration: none;">MICHELOB ULTRA<br>T-C 12 PACK 24/355 ML</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MICHELOB ULTRA/MODERNO/BOTE/355 ML/0195_8942 MCH 355 ML 12 PK TALL CAN CI REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+                <div class="product-item" data-name="MICHELOB ULTRA 12 PACK 24/355 ML NR PESADO" data-code="3017658" onclick="openModal('3017658')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3017658</h2>
+                    <p style="text-decoration: none;">MICHELOB ULTRA<br>12 PACK 24/355 ML NR PESADO</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MICHELOB ULTRA/MODERNO/355 ML/1103_8917  MCH 355 ML 12 PK NR PESADO REV 00.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+             <div class="product-item" data-name="MOD ESPECIAL BT<br>12P 12/710 ML CI" data-code="3009696" onclick="openModal('3009696')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="p3009696.png" alt="3009696" class="imagen-portada">
+                    <h2 style="text-decoration: none;">3009696</h2>
+                    <p style="text-decoration: none;">MOD ESPECIAL BT<br>12P 12/710 ML CI</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MODELO ESPECIAL/MODERNO/BOTE/710 ML/1012_2058 ME  710 ML 12 PK BT DIV REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="MOD NOCHE ESPECIAL <br>6PK 12/355 ML" data-code="3008870" onclick="openModal('3008870')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008870</h2>
+                    <p style="text-decoration: none;">MOD NOCHE ESPECIAL<br>6PK 12/355 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MODELO NOCHE ESP/MODERNO/355 ML/0987_3508 M NE 355 ML 6 PK NR REV 00.pdf" target="_blank" style="color: #ffffff; background-color: #1E90FF; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="MOD PURA MALTA<br>6PK 12/355 ML NR" data-code="3008737" onclick="openModal('3008737')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008737</h2>
+                    <p style="text-decoration: none;">MOD PURA MALTA<br>6PK 12/355 ML NR</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MODELO PURA MALTA/MODERNO/355 ML/0971_2700 MPM 355ML 6 PK NR REV 03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+            <div class="product-item" data-name="MODELO ESP<br>12PK 12/ 1L NR" data-code="3007532" onclick="openModal('3007532')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3007532</h2>
+                    <p style="text-decoration: none;">MODELO ESP<br>12PK 12/ 1L CT</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MODELO ESPECIAL/TRADICIONAL/1 L/0521_2059 ME 1L 12 PK TD REV 07.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>    
+            <div class="product-item" data-name="MODELO ESP<br>6PK 12/355 ML CM CIF" data-code="3007531" onclick="openModal('3007531')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3007531</h2>
+                    <p style="text-decoration: none;">MODELO ESP<br>6PK 12/355 ML CM CIF</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MODELO ESPECIAL/MODERNO/355 ML/0522_2007 ME 355ML 6 PK MD CIF REV 05.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+            <div class="product-item" data-name="MODELO ESP BT<br>12 PK 24/355 ML REF CM CI" data-code="3007497" onclick="openModal('3007497')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3007497</h2>
+                    <p style="text-decoration: none;">MODELO ESP BT<br>12 PK 24/355 ML REF CM CI</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MODELO ESPECIAL/MODERNO/BOTE/355 ML/0509_2055 ME 355 ML 12 PK BT MD REFRICHELADOR CI REV 09.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="MODELO ESP BT 6PK H-C 24/330 ML" data-code="3008990" onclick="openModal('3008990')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008990</h2>
+                    <p style="text-decoration: none;">MODELO ESP BT<br>6PK H-C 24/330 ML</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MODELO ESPECIAL/MODERNO/BOTE/330 ML/0992_2000 ME 330 ML 6PK H-C BT REV 04.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="MODELO ESP TALL CAN<br>12PK 24/269 ML" data-code="3008591" onclick="openModal('3008591')">
+                <a href="./DetallesHTML/3008591.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008591</h2>
+                    <p style="text-decoration: none;">MODELO ESP TALL CAN<br>12PK 24/269 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MODELO ESPECIAL/MODERNO/BOTE/269 ML/0961_2099 ME 269 ML 12 PK TALL CAN REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="MODELO ESP 6PK 12/355 ML NR" data-code="3017868" onclick="openModal('3017868')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3017868</h2>
+                    <p style="text-decoration: none;">MODELO ESP<br>6PK 12/355 ML NR</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MODELO ESPECIAL/MODERNO/355 ML/1113_1908 ME 6 PK 12 355 ML NR REV 00.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="MODELO ESPECIAL BOTE<br>12PK H-C 24/330 ML" data-code="3010397" onclick="openModal('3010397')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="3010397.png" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3010397</h2>
+                    <p style="text-decoration: none;">MODELO ESPECIAL BOTE<br>12PK H-C 24/330 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MODELO ESPECIAL/TRADICIONAL/BOTE/330 ML/1055_1999 ME 330 ML 12 PK BT H-C   REV 03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="MONTEJO BOTE<br>6PK H-C 24/355 ML CT" data-code="3000159" onclick="openModal('3000159')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3000159</h2>
+                    <p style="text-decoration: none;">MONTEJO BOTE<br>6PK H-C 24/355 ML CT</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="MU DIV 12PK 12/850 ML NR" data-code="3017367" onclick="openModal('3017367')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3017367</h2>
+                    <p style="text-decoration: none;">MU<br>DIV 12PK 12/850 ML NR</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MICHELOB ULTRA/MODERNO/850 ML/1094_8932 MU 850 ML 12 PACK DIVISIÓN NR REV 00.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="NEGRA MODELO BT<br>12PK 24/355 ML REF CM CI" data-code="3007446" onclick="openModal('3007446')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3007446</h2>
+                    <p style="text-decoration: none;">NEGRA MODELO BT<br>12PK 24/355 ML REF CM CI</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/NEGRA MODELO/TRADICIONAL/BOTE/355 ML/12 PACK/0508_3236 NM 355 ML 12 PK BT MD REFRICHELADOR CI REV 09.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+             <div class="product-item" data-name="NEGRA MODELO BT<br>4PK H-C 24/473 ML" data-code="3009756" onclick="openModal('3009756')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3009756</h2>
+                    <p style="text-decoration: none;">NEGRA MODELO BT<br>4PK H-C 24/473 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/NEGRA MODELO/MODERNO/BOTE/473 ML/1021_3302 NM BT 24 473 ML HC REV 06.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="NEGRA MODELO BT 6PK 12/355 ML NR" data-code="3017867" onclick="openModal('3017867')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3017687</h2>
+                    <p style="text-decoration: none;">NEGRA MODELO BT<br>6PK 12/355 ML NR</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+             <div class="product-item" data-name="NM<br>6PK 12/355 ML CM CIF" data-code="3007530" onclick="openModal('3007530')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3007530</h2>
+                    <p style="text-decoration: none;">NM<br>6PK 12/355 ML CM CIF</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="NM BOTE<br>6PK H-C 24/355 ML CT CI" data-code="3007290" onclick="openModal('3007290')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3007290</h2>
+                    <p style="text-decoration: none;">NM BOTE<br>6PK H-C 24/355 ML CT CI</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="P SUAVE TALL CAN<br>12PK 24/355ML FRIDGED" data-code="3008451" onclick="openModal('3008451')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008451</h2>
+                    <p style="text-decoration: none;">P SUAVE TALL CAN<br>12PK 24/355ML FRIDGED</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/PACIFICO SUAVE/Moderno/BOTE/355ML/0951_6159 PS 355 ML 12 PK TALL CAN REFRICHELADOR REV 04.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="P TC 12 PK 24/355 ML REFRICHELADOR" data-code="3017337" onclick="openModal('3017337')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3017337</h2>
+                    <p style="text-decoration: none;">P TC<br>12 PK 24/355 ML REFRICHELADOR</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/PACIFICO/MODERNO/BOTE/355ML/1090_1860 P 355 ML TALL CAN 12 PK REFRICHELADOR REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="P TALL CAN<br>12 PK 24/355 ML FRIDGE CI" data-code="3008416" onclick="openModal('3008416')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008416</h2>
+                    <p style="text-decoration: none;">P TALL CAN<br>12 PK 24/355 ML FRIDGE CI</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="PACIFICO<br>6 PK 24/355 ML NR CI" data-code="3008478" onclick="openModal('3008478')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008478</h2>
+                    <p style="text-decoration: none;">PACIFICO<br>6 PK 24/355 ML NR CI</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/PACIFICO/MODERNO/355 ML/0943_6160 P 355 ML 6 PK NR CI REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="PACIFICO CLARA BOTE<br>6 PK H-C 24/410 ML" data-code="3010298" onclick="openModal('3010298')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3010298</h2>
+                    <p style="text-decoration: none;">PACIFICO CLARA BOTE<br>6 PK H-C 24/410 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/PACIFICO/MODERNO/BOTE/410 ML/1050_6115 P  410 ML  6 PK H-C BT  REV 06.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+            <div class="product-item" data-name="PACIFICO LIGHT BOTE<br>8 PK H-C 24/355 ML CT" data-code="3000050" onclick="openModal('3000050')">
+                <a href="./DetallesHTML/3000050.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3000050</h2>
+                    <p style="text-decoration: none;">PACIFICO LIGHT BOTE<br>8 PK H-C 24/355 ML CT</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/PACIFICO LIGHT/Tradicional/Bote/355 ML/0358_6203 PL 355 ML 8 PK BT FLAT TD REV 13.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="PACIFICO LIGHT BOTE<br>12 PK FRIDGE 24/355 ML CT" data-code="3000192" onclick="openModal('3000192')">
+                <a href="./DetallesHTML/3000192.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3000192</h2>
+                    <p style="text-decoration: none;">PACIFICO LIGHT BOTE<br>12 PK FRIDGE 24/355 ML CT</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/PACIFICO LIGHT/Tradicional/Bote/355 ML/0361_6239 PL 355 ML BT 12 PK  FRIDGE TD REV 18.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="PACIFICO SUAVE BOTE<br>6 PK H-C 24/410 ML" data-code="3010446" onclick="openModal('3010446')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3010446</h2>
+                    <p style="text-decoration: none;">PACIFICO SUAVE BOTE<br>6 PK H-C 24/410 ML</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/PACIFICO SUAVE/Moderno/BOTE/410ML/1070_6248 PS 410 ML 6 PK H-C BT  REV 03.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="PACIFICO TALL CAN<br>6PK H-C 24/355 ML CI" data-code="3008450" onclick="openModal('3008450')">
+                <a href="./DetallesHTML/3008450.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008450</h2>
+                    <p style="text-decoration: none;">PACIFICO TALL CAN<br>6PK H-C 24/355 ML CI</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>  
+            <div class="product-item" data-name="PREMIUM 12 PK ME-NM-MA-MT 12/355 ML ND MATE" data-code="3008039" onclick="openModal('3008039')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="3008039p.png" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008039</h2>
+                    <p style="text-decoration: none;">PREMIUM 12 PK<br>ME-NM-MA-MT 12/355 ML ND MATE</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MIXTAS/MODERNO/355 ML/0561_7733 ME-NM-MA-MT 355 ML 12 PK ND MATE REV 01.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="PREMIUM 24 PK ME-NM-MA-MT 12/355 ML ND MATE" data-code="3008038" onclick="openModal('3008038')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="3008039p.png" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008038</h2>
+                    <p style="text-decoration: none;">PREMIUM 24 PK<br>ME-NM-MA-MT 12/355 ML ND MATE</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MIXTAS/MODERNO/355 ML/0560_7732 ME-NM-MA-MT 355 ML 24 PK ND MATE REV 01.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="PREMIUM 12 PK ME-NM-MA-MT 12/355 ML NR" data-code="3017917" onclick="openModal('3017917')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="3008039p.png" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3017917</h2>
+                    <p style="text-decoration: none;">PREMIUM 12 PK<br>ME-NM-MA-MT 12/355 ML NR</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MIXTAS/MODERNO/355 ML/1121_7728 PREMIUM 12 PACK ME-NM-MA-MT 12355ML NR REV 00.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="PREMIUM 12 PK ME-NM-MA-MT 24/355 ML NR" data-code="3017927" onclick="openModal('3017927')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="3008039p.png" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3017927</h2>
+                    <p style="text-decoration: none;">PREMIUM 24 PK<br>ME-NM-MA-MT 24/355 ML NR</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/MIXTAS/MODERNO/355 ML/1120_7721 PREMIUM 24 PACK ME-NM-MA-MT NR REV 00.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="PS<br>6PK 24/355 ML NR" data-code="3008440" onclick="openModal('3008440')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008440</h2>
+                    <p style="text-decoration: none;">PS<br>6PK 24/355 ML NR</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/PACIFICO SUAVE/Moderno/355 ML/0940_6155 PS 355 ML 6PK ML NR REV 01.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="PS TALL CAN<br>6PK HI-CONE 24/355 ML" data-code="3008461" onclick="openModal('3008461')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008461</h2>
+                    <p style="text-decoration: none;">PS TALL CAN<br>6PK HI-CONE 24/355 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/PACIFICO SUAVE/Moderno/BOTE/355ML/0941_6158 PS 355 ML 6 PK TALL CAN REV 08.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="STELLA A<br>6 PK 24/330 ML NR" data-code="3008438" onclick="openModal('3008438')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008438</h2>
+                    <p style="text-decoration: none;">STELLA A<br>6 PK 24/330 ML NR</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/STELLA ARTOIS/MODERNO/330 ML/0927_8945 SA 330 ML 6 PK NR REV 09.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="STELLA ARTOIS<br>12 PK 24/330 ML" data-code="3008777" onclick="openModal('3008777')">
+                <a href="./DetallesHTML/3008777.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008777</h2>
+                    <p style="text-decoration: none;">STELLA ARTOIS<br>12 PK 24/330 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/STELLA ARTOIS/MODERNO/330 ML/0981_8941 SA 330 ML 12 PK NR REV 06.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="STELLA ARTOIS BOTE<br>6P 24/250 ML" data-code="3007387" onclick="openModal('3007387')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3007387</h2>
+                    <p style="text-decoration: none;">STELLA ARTOIS BOTE<br>6P 24/250 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="V 1.8 BT<br>4 PK H-C 27/473 ML" data-code="3008597" onclick="openModal('3008597')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008597</h2>
+                    <p style="text-decoration: none;">V 1.8 BT<br>4 PK H-C 27/473 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="VICTORIA BOTE<br>12PK DIV 12/710 ML" data-code="3008268" onclick="openModal('3008268')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008268</h2>
+                    <p style="text-decoration: none;">VICTORIA BOTE<br>12PK DIV 12/710 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/Tradicional/BOTE/710 ML/0919_4049 V 710 ML 12 PK BT DIV REV 06.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="VICTORIA CHAMOY BOTE<br>4PK H-C 24/473 ML" data-code="3008402" onclick="openModal('3008402')">
+                <a href="./DetallesHTML/3008402.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008402</h2>
+                    <p style="text-decoration: none;">VICTORIA CHAMOY BOTE<br>4PK H-C 24/473 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/MODERNO/BOTE/473 ML/0933_4015 V CHAMOY 473 ML 4 PK BT H-C REV 06.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+            <div class="product-item" data-name="VICTORIA FAMILIAR<br>12/940 ML R GRABADA" data-code="3009068" onclick="openModal('3009068')">
+                <a href="./DetallesHTML/3009068.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3009068</h2>
+                    <p style="text-decoration: none;">VICTORIA FAMILIAR<br>12/940 ML R GRABADA</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/MODERNO/940 ML/0994_1525 V FAM 940 ML 12 PK AF GRABADA REV 01.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="VICKY JAMAICA CAN<br>24PK 355 ML" data-code="3010542" onclick="openModal('3010542')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3010542</h2>
+                    <p style="text-decoration: none;">VICKY JAMAICA CAN<br>24PK 355 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="VICKY PONCHE CAN<br>24 PACK 355 ML" data-code="3010540" onclick="openModal('3010540')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3010540</h2>
+                    <p style="text-decoration: none;">VICKY PONCHE CAN<br>24 PACK 355 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="VICTORIA<br>12PK 12/210 ML CM" data-code="3003601" onclick="openModal('3003601')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3003601</h2>
+                    <p style="text-decoration: none;">VICTORIA<br>12PK 12/210 ML CM</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/MODERNO/210 ML/0377_1511 V 210 ML LOOSE 12  PK MD REV 19.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="VICTORIA<br>12PK 12/355 ML CM" data-code="3001462" onclick="openModal('3001462')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3001462</h2>
+                    <p style="text-decoration: none;">VICTORIA<br>12PK 12/355 ML CM</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/MODERNO/355 ML/0031_1606 V 355 ML 12 PK MD REV 24.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="VICTORIA BOTE<br>4PK H-C 24/473 ML CT" data-code="3003697" onclick="openModal('3003697')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3003697</h2>
+                    <p style="text-decoration: none;">VICTORIA BOTE<br>4PK H-C 24/473 ML CT</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/Tradicional/BOTE/473 ML/0916_4001 V 473 ML 4 PK HI CONE 24 BT TC REV 27.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="VICTORIA BOTE<br>6PK H-C 24/355 ML CT" data-code="3005167" onclick="openModal('3005167')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3005167</h2>
+                    <p style="text-decoration: none;">VICTORIA BOTE<br>6PK H-C 24/355 ML CT</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/Tradicional/BOTE/355 ML/6 PACK/0864_1722 V 355 ML 6 PK BT  HI-CONE TD REV 08.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+                <div class="product-item" data-name="VICTORIA BOTE<br>12PK 24/330 ML" data-code="3009850" onclick="openModal('3009850')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3009850</h2>
+                    <p style="text-decoration: none;">VICTORIA BOTE<br>12PK 24/330 ML</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/MODERNO/BOTE/330 ML/1031_1638 V 330 ML 12 PK BT  NORTEÑAS REV 02.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+            <div class="product-item" data-name="VICTORIA BOTE<br>12P 24/355 ML CM FRIDGE" data-code="3006108" onclick="openModal('3006108')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3006108</h2>
+                    <p style="text-decoration: none;">VICTORIA BOTE<br>12P 24/355 ML CM FRIDGE</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/MODERNO/BOTE/355 ML/0423_1635 V 355 ML 12 PK BT MD REFRICHELADOR REV 08.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="VICTORIA BOTE<br>4PK H-C 24/473 ML XIBALBA" data-code="3009725" onclick="openModal('3009725')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3009725</h2>
+                    <p style="text-decoration: none;">VICTORIA BOTE<br>4PK H-C 24/473 ML XIBALBA</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+             <div class="product-item" data-name="VICTORIA BOTE<br>6PK H-C 24/410 ML" data-code="3010297" onclick="openModal('3010297')">
+                <a href="./DetallesHTML/3010297.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3010297</h2>
+                    <p style="text-decoration: none;">VICTORIA BOTE<br>6PK H-C 24/410 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/MODERNO/BOTE/410 ML/1051_4021 V  410 ML 6 PK H-C BT  REV 05.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="VICTORIA BOTE<br>6PK H-C 24/330 ML" data-code="3008989" onclick="openModal('3008989')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3008989</h2>
+                    <p style="text-decoration: none;">VICTORIA BOTE<br>6PK H-C 24/330 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/MODERNO/BOTE/330 ML/0991_1650 V 330 ML 6PK H-C BT REV 04.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="VICTORIA CHELADA CN<br>4PK H-C 24/473 ML OCT" data-code="3005340" onclick="openModal('3005340')">
+                <a href="./DetallesHTML/3005340.html" style="text-decoration: none;">
+                    <img src="p3005340.png" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3005340</h2>
+                    <p style="text-decoration: none;">VICTORIA CHELADA CN<br>4PK H-C 24/473 ML OCT</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_NR_RV_03.pdf" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+            </div>
+            <div class="product-item" data-name="VICTORIA MANGO BOTE<br>4P H-C 24/473 ML" data-code="3009209" onclick="openModal('3009209')">
+                <a href="./DetallesHTML/3009209.html" style="text-decoration: none;">
+                    <img src="p3009209.png" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3009209</h2>
+                    <p style="text-decoration: none;">VICTORIA MANGO BOTE<br>4P H-C 24/473 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/MODERNO/BOTE/473 ML/0998_4096 V MANGO 473 ML 4 PK BT H-C REV 09.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="VICTORIA MEGA<br>12/1.2L CM LISA" data-code="3002998" onclick="openModal('3002998')">
+                <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3002998</h2>
+                    <p style="text-decoration: none;">VICTORIA MEGA<br>12/1.2L CM LISA</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/MODERNO/1200 ML/0188_1521 V 1.2 L 12 PK DIV MD PAPEL REV 29.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <div class="product-item" data-name="VICTORIA PIÑA BOTE<br>4P H-C 24/473 ML" data-code="3010377" onclick="openModal('3010377')">
+                <a href="./DetallesHTML/3010377.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3010377</h2>
+                    <p style="text-decoration: none;">VICTORIA PIÑA BOTE<br>4P H-C 24/473 ML</p>
+                </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/MODERNO/BOTE/473ML/1058_4077_V_PIÑA_473_ML_4_PK_BT_H-C_REV_04.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+                <div class="product-item" data-name="VICTORIA BT<br>12P 24/355 ML MALETIN" data-code="3007947" onclick="openModal('3007947')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3007947</h2>
+                    <p style="text-decoration: none;">VICTORIA BT<br>12P 24/355 ML MALETIN</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/BUDWEISER/1064_0862_BW_355_ML_6_PK_" target="_blank" style="color: #ffffff; background-color: #ff0000; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div> 
+                <div class="product-item" data-name="VICTORIA LOOSE PK 24/355 ML CM" data-code="3001463" onclick="openModal('3001463')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3001463</h2>
+                    <p style="text-decoration: none;">VICTORIA LOOSE<br>PK 24/355 ML CM</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/MODERNO/355 ML/0034_1601 V 355 ML 24 PK LOOSE MD REV 28.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="VICTORIA LOOSE PK 24/210 ML AF" data-code="3010243" onclick="openModal('3010243')">
+                    <a href="./DetallesHTML/301024" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3010243</h2>
+                    <p style="text-decoration: none;">VICTORIA LOOSE<br>PK 24/210 ML AF</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/MODERNO/210 ML/1047_1515 V 210 ML LOOSE 24 PK MD REV 00.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+                <div class="product-item" data-name="VICTORIA LOOSE PACK DIV 24/210 ML NR" data-code="3017871" onclick="openModal('3017871')">
+                    <a href="./DetallesHTML/3006069.html" style="text-decoration: none;">
+                    <img src="producto2.jpg" alt="Producto 2">
+                    <h2 style="text-decoration: none;">3017871</h2>
+                    <p style="text-decoration: none;">VICTORIA LOOSE<br>PACK DIV 24/210 ML NR</p>
+                    </a>
+                    <br>
+                <div class="link-container">
+                        <div class="pdf">
+                            <a href="./FT/VICTORIA/MODERNO/210 ML/1117_1505 V 210 ML DIV LOOSE 24 PK NR REV 00.pdf" target="_blank" style="color: #ffffff; background-color: #1e90ff; padding: 10px 20px; border-radius: 100px; text-decoration: none;">Ficha Técnica</a>
+
+                        </div>
+                </div>
+                </div>
+            <!-- Más productos aquí -->
+        </div>
+    </div>
+
+    <script>
+        // Función para abrir el modal con la imagen y descripción específicas
+        function openModal(productCode) {
+            let productImage = "";
+            let productDescription = "";
+
+            // Asignar la imagen y descripción dependiendo del código del producto
+            if (productCode === '3005860') {
+                productImage = 'detallesp/3005860.png';
+                productDescription = 'wwww.youtube.com';
+            } else if (productCode === '3008167') {
+                productImage = 'detallesp/3008167.png';
+                productDescription = 'Descripción modificada para el producto 3008167.';
+            }    else if (productCode === '3009696') {
+                productImage = 'detallesp/3009696.png';
+                productDescription = 'Descripción modificada para el producto 3009696.';
+            }    else if (productCode === '3009209') {
+                productImage = 'detallesp/3009209p.png';
+                productDescription = 'Descripción modificada para el producto 3009209.';
+            }
+
+            // Puedes añadir más condiciones aquí para otros productos
+
+            document.getElementById('modal-title').textContent = productCode;
+            document.getElementById('modal-description').textContent = productDescription;
+            document.getElementById('modal-img').src = productImage;
+            document.getElementById('myModal').style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById('myModal').style.display = "none";
+        }
+
+        // Función para filtrar productos
+        function searchProducts() {
+            const input = document.getElementById('search');
+            const filter = input.value.toLowerCase();
+            const items = document.querySelectorAll('.product-item');
+
+            for (let i = 0; i < items.length; i++) {
+                const name = items[i].getAttribute('data-name').toLowerCase();
+                const code = items[i].querySelector('h2').textContent.toLowerCase();
+                const description = items[i].querySelector('p').textContent.toLowerCase();
+                if (name.includes(filter) || code.includes(filter) || description.includes(filter)) {
+                    items[i].style.display = "";
+                } else {
+                    items[i].style.display = "none";
+                }
+            }
+        }
+
+        // Filtrado de productos (función dummy)
+        function filterProducts(category) {
+            console.log('Filtrando productos por categoría: ' + category);
+            // Aquí puedes implementar la lógica para filtrar los productos por categoría
+        }
+        function filterProducts(category) {
+        const products = document.querySelectorAll('.product');
+        products.forEach(product => {
+            const productCategory = product.getAttribute('data-category');
+            if (category === 'all' || productCategory === category) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    }
+    
+    </script>
+</body>
+
+</html>

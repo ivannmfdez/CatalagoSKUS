@@ -1,0 +1,108 @@
+.images-container {
+  display: flex;
+  justify-content: space-between; /* Asegura que las imágenes estén bien espaciadas */
+  padding: 16px;
+}
+
+.product-image {
+  width: auto; /* Ajusta el ancho para asegurarte de que quepan lado a lado */
+  height: auto;
+  max-width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.product-header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 8px; /* Reducido de 16px a 8px */
+  text-align: center;
+}
+
+.product-id {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 4px; /* Reducido de 8px a 4px */
+}
+
+.product-name {
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.images-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px; /* Reducido de 16px a 8px */
+}
+
+.button-group {
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  padding: 8px; /* Reducido de 12px a 8px */
+  margin-bottom: 12px; /* Reducido de 16px a 12px */
+}
+
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px; /* Reducido de 8px a 4px */
+}
+
+.button {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 10px; /* Reducido de 10px a 8px en vertical y de 15px a 10px en horizontal */
+  font-size: 0.9em;
+  text-align: center;
+  width: 30%;
+  font-weight: bold;
+}
+.armado-container {
+  display: flex;
+  justify-content: space-around; /* Espacio entre los items */
+  flex-wrap: wrap; /* Permite que los items se acomoden en múltiples filas si es necesario */
+}
+
+.armado-item {
+  text-align: center; /* Centra el texto dentro del contenedor */
+  flex-basis: 22%; /* Ajusta el tamaño de cada item para que ocupen un 22% del ancho total */
+  margin: 10px; /* Espacio entre los items */
+}
+
+.armado-image {
+  width: 100%; /* Ajusta el ancho de la imagen al contenedor */
+  height: auto; /* Mantiene las proporciones originales de la imagen */
+  max-width: 200px; /* Establece un máximo de ancho para las imágenes */
+  object-fit: cover; /* Recorta la imagen si es necesario para que se ajuste bien */
+}
+
+.armado-description {
+  margin-top: 8px; /* Espacio entre la imagen y la descripción */
+  font-size: 14px; /* Tamaño de fuente para la descripción */
+}
+.product-item {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Eliminar el subrayado en el número de producto (h2) */
+.product-item h2 {
+  text-decoration: none;  /* Elimina el subrayado */
+  color: inherit;  /* Mantiene el color del texto original */
+}
+
+/* Eliminar el subrayado en la descripción del producto (p) */
+.product-item p {
+  text-decoration: none;  /* Elimina el subrayado */
+  color: inherit;  /* Mantiene el color del texto original */
+}
+
+/* Eliminar el subrayado en todos los enlaces (a) dentro de product-item */
+.product-item a {
+  text-decoration: none;  /* Elimina el subrayado en los enlaces */
+  color: inherit;  /* Mantiene el color del texto original */
+}

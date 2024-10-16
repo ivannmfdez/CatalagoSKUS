@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactividad Producto con Zoom</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .info, .images, .logos {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .info div, .logos img {
+      background-color: #FFCC00;
+      padding: 10px;
+      text-align: center;
+      border-radius: 10px;
+    }
+
+    .logos img {
+      width: 100px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .logos img:hover {
+      transform: scale(1.1);
+    }
+
+    .product-images img {
+      width: 120px;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .product-images img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Modal para el zoom */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      position: relative;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    .modal-content img {
+      width: 100%;
+      height: auto;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      color: #fff;
+      font-size: 30px;
+      cursor: pointer;
+    }
+
+    /* Responsive design */
+    @media (max-width: 600px) {
+      .logos img, .product-images img {
+        width: 80px;
+      }
+
+      .info div {
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Número de producto -->
+    <div class="info">
+      <div>3009209</div>
+      <div>VICTORIA MANGO BOTE<br>4 P H-C 24/473 ML</div>
+    </div>
+
+    <!-- Imágenes del producto (Clic para zoom) -->
+    <div class="product-images">
+      <img src="ruta-de-tu-imagen.png" alt="Producto 1" onclick="openModal('ruta-de-tu-imagen.png')">
+      <img src="ruta-de-tu-imagen2.png" alt="Producto 2" onclick="openModal('ruta-de-tu-imagen2.png')">
+    </div>
+
+    <!-- Cadenas comerciales (logos interactivos) -->
+    <div class="logos">
+      <img src="ruta-logo-walmart.png" alt="Walmart" onclick="showDetails('Walmart')">
+      <img src="ruta-logo-circlek.png" alt="Circle K" onclick="showDetails('Circle K')">
+      <img src="ruta-logo-oxxo.png" alt="OXXO" onclick="showDetails('OXXO')">
+    </div>
+
+    <!-- Modal (Zoom en la imagen) -->
+    <div id="myModal" class="modal">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <div class="modal-content">
+        <img id="modalImage" src="" alt="Zoom de imagen">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Función para abrir el modal y mostrar la imagen con zoom
+    function openModal(imageSrc) {
+      var modal = document.getElementById('myModal');
+      var modalImg = document.getElementById('modalImage');
+      modal.style.display = 'flex'; // Mostrar el modal
+      modalImg.src = imageSrc; // Cambiar la imagen del modal
+    }
+
+    // Función para cerrar el modal
+    function closeModal() {
+      var modal = document.getElementById('myModal');
+      modal.style.display = 'none'; // Ocultar el modal
+    }
+
+    // Función para mostrar detalles (puedes personalizarla)
+    function showDetails(name) {
+      alert('Has seleccionado: ' + name);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Producto Interactivo Móvil - Diseño Mejorado</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #0066cc;
+      --secondary-color: #ffd700;
+      --background-color: #f5f5f5;
+      --card-color: #ffffff;
+      --text-color: #000000;
+    }
+    body {
+      font-family: 'Bebas Neue', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--background-color);
+      color: var(--text-color);
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+    .product-card {
+      background-color: var(--card-color);
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .product-header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .product-id {
+      font-size: 1.2em;
+      margin-bottom: 8px;
+    }
+    .product-name {
+      font-size: 1.6em;
+    }
+    .images-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    .product-image-wrapper {
+      width: 120px;
+      height: 120px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    .product-image-wrapper:hover {
+      transform: scale(1.05);
+    }
+    .product-image {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .section-title {
+      font-size: 1.3em;
+      text-align: center;
+      margin: 20px 0 12px;
+      color: var(--primary-color);
+    }
+    .button-group {
+      background-color: #f9f9f9;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+    .button-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .button {
+      background-color: var(--secondary-color);
+      color: var(--text-color);
+      border: none;
+      border-radius: 25px;
+      padding: 12px 18px;
+      font-size: 1em;
+      text-align: center;
+      flex-grow: 1;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #e6c200;
+      transform: translateY(-2px);
+    }
+    .button:active {
+      transform: scale(0.95);
+    }
+    .armado-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      padding: 16px;
+    }
+    .armado-item {
+      background-color: #f9f9f9;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-align: center;
+    }
+    .armado-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+    .armado-description {
+      padding: 12px;
+      font-size: 0.9em;
+    }
+    .armado-details {
+      margin-top: 8px;
+      font-size: 0.8em;
+      color: #666;
+    }
+    .modal {
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-content {
+      width: 90%;
+      max-width: 700px;
+    }
+    .modal-content img {
+      width: 100%;
+      border-radius: 12px;
+    }
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: #bbb;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="product-card">
+      <div class="product-header">
+        <div class="product-id">3010298</div>
+        <div class="product-name">PACIFICO CLARA BOTE<br>6PK H-C 24/410 ML</div>
+      </div>
+      <div class="images-container">
+        <div class="product-image-wrapper">
+          <img class="product-image" src="./3010298.png" alt="Producto 1" onclick="openModal(this.src)">
+        </div>
+        <div class="product-image-wrapper">
+          <img class="product-image" src="./3010298c.png" alt="Producto 2" onclick="openModal(this.src)">
+        </div>
+      </div>
+      <div class="button-group">
+        <div class="section-title">Cadenas Comerciales</div>
+        <div class="button-row">
+          <div class="button">Walmart</div>
+          <div class="button">Circle K</div>
+          <div class="button">OXXO</div>
+        </div>
+      </div>
+      <div class="section-title">Tipos de Armado</div>
+      <div class="armado-container">
+        <div class="armado-item" onclick="selectArmado(this)">
+          <img class="armado-image" src="./Armados/Barrilito/Bote/355ml/Armado1.png" alt="Armado 1" style="width: 150px; height: auto;">
+          <div class="armado-description">Número de Armado </div>
+          <div class="armado-details">
+            Total de camas: 4<br>
+            Caja por cama: 2
+          </div>
+        </div>
+        <div class="armado-item" onclick="selectArmado(this)">
+          <img class="armado-image" src="./Armados/Barrilito/Bote/355ml/Armado2.png" alt="Armado 2" style="width: 150px; height: auto;">
+          <div class="armado-description">Número de Armado</div>
+          <div class="armado-details">
+            Total de camas: 3<br>
+            Caja por cama: 1
+          </div>
+        </div>
+        <div class="armado-item" onclick="selectArmado(this)">
+          <img class="armado-image" src="/api/placeholder/400/320" alt="Armado 3" style="width: 150px; height: auto;">
+          <div class="armado-description">Detalles del armado 3</div>
+          <div class="armado-details">
+            Número de armado: 3<br>
+            Total de camas: 5<br>
+            Caja por cama: 2
+          </div>
+        </div>
+        <div class="armado-item" onclick="selectArmado(this)">
+          <img class="armado-image" src="/api/placeholder/400/320" alt="Armado 4" style="width: 150px; height: auto;">
+          <div class="armado-description">Detalles del armado 4</div>
+          <div class="armado-details">
+            Número de armado: 4<br>
+            Total de camas: 4<br>
+            Caja por cama: 3
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="modal-content">
+      <img id="modal-image" src="" alt="Imagen del producto">
+    </div>
+  </div>
+
+  <script>
+    function openModal(src) {
+      document.getElementById('modal-image').src = src;
+      document.getElementById('modal').classList.add('active');
+    }
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+    }
+    function selectArmado(element) {
+      const armados = document.querySelectorAll('.armado-item');
+      armados.forEach(armado => {
+        armado.style.border = ''; // Remover el borde azul
+      });
+    }
+  </script>
+</body>
+</html>
