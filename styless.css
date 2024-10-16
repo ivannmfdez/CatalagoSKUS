@@ -202,7 +202,7 @@ input[type="text"] {
 /* Media Query para pantallas pequeñas */
 @media (max-width: 600px) {
     .header img {
-        max-width: 80%; /* Ajusta el tamaño del logo para pantallas pequeñas */
+        max-width: 20%; /* Ajusta el tamaño del logo para pantallas pequeñas */
         max-height: 60px; /* Ajusta la altura en pantallas pequeñas */
         height: auto; /* Mantiene la proporción del logo */
     }
